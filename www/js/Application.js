@@ -8,9 +8,9 @@
     configure: function configure($routeProvider, Routes) {
       $routeProvider
         .when(Routes.ROOT, {
-          templateUrl: 'partials/redcat_initializer.html',
-          controller: 'RedCatInitializerController',
-          controllerAs: 'redcat'
+          templateUrl: 'partials/home.html',
+          controller: 'HomeController',
+          controllerAs: 'home'
         })
         .when(Routes.REDCAT, {
           templateUrl: 'partials/redcat_initializer.html',
@@ -41,11 +41,11 @@
           controller: 'EngineSelectorController',
           controllerAs: 'engine'
         })
-        .when(Routes.PROMIS, {
+        .when(Routes.PROMIS + '/:index', {
           templateUrl: 'partials/promis.html',
-          controller: 'PROMISController'
+          controller: 'PROMISController',  
         })
-        .when(Routes.SESSIONS, {
+        .when(Routes.SESSIONS + '/:index', {
           templateUrl: 'partials/session.html',
           controller: 'SessionsController',
           controllerAs: 'session'

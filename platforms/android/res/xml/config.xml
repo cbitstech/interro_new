@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="edu.northwestern.cbits.sis" version="0.4.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="edu.northwestern.cbits.interro" version="0.4.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <preference name="loglevel" value="DEBUG" />
     <feature name="NetworkStatus">
         <param name="android-package" value="org.apache.cordova.networkinformation.NetworkManager" />
@@ -10,14 +10,14 @@
     <feature name="LocalNotification">
         <param name="android-package" value="de.appplant.cordova.plugin.localnotification.LocalNotification" />
     </feature>
-    <name>SiS</name>
+    <name>Interro</name>
     <description>
-        An application to aid in the cessation of smoking cigarettes.
+        An application to deploy PROMIS Measures
     </description>
-    <author email="eric.schlange@northwestern.edu" href="http://www.cbits.northwestern.edu">
-        Eric Schlange
+    <author email="m-begale@northwestern.edu" href="http://www.cbits.northwestern.edu">
+        Mark Begale
     </author>
     <content src="index.html" />
-    <access origin="" />
+    <access origin="ACCESS_ORIGIN" />
     <icon src="res/icon.png" />
 </widget>

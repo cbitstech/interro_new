@@ -2,7 +2,8 @@
   'use strict';
 
   function SessionQuestion($filter, $http) {
-    this.SESSION_CONTENT_PATH = 'content/SessionContent.json';
+
+
     this.rawContent = null;
     this.currentSessionNumber = null;
     this.content = null;
@@ -13,9 +14,30 @@
 
     var self = this;
 
+    // {
+    //   "order":3,
+    //   "variable":"session1_1",
+    //   "form":"session_1",
+    //   "section":"Smoking Cessation Session #1",
+    //   "type":"radio",
+    //   "label":"<h3>Welcome to Interro.</h3><h4>Ready to answer a few questions?</h4>",
+    //   "choices":"Totally! | No Way!",
+    //   "field":"",
+    //   "validation":"",
+    //   "min":"",
+    //   "max":"",
+    //   "identifier":"",
+    //   "branching_logic":"",
+    //   "required":"y",
+    //   "alignment":"",
+    //   "question_number":"",
+    //   "matrix_group":"",
+    //   "matrix_ranking":""
+    // }
+
     this.setSessionContent = function(sessionNumber) {
       this.currentSessionNumber = sessionNumber;
-      $http.get(this.SESSION_CONTENT_PATH).success(this.populateContentForSession);
+      $http.post(this.SESSION_CONTENT_PATH).success(this.populateContentForSession);
     };
 
     this.populateContentForSession = function(data) {
@@ -30,13 +52,38 @@
     this.setSubsessionContent = function(startPosition, endPosition) {
       self.startPosition = startPosition;
       self.endPosition = endPosition;
-
-      $http.get(this.SESSION_CONTENT_PATH).success(this.populateContentForSubSession);
+      $http
+        .get(this.SESSION_CONTENT_PATH)
+        .success(this.populateContentForSubSession)
+        .error(this.onNoConnectionError);
     };
+
+    this.onNoConnectionError = function(){
+
+      var connectionAttemptDateTime = new Date();
+
+      if (localStorage['REDCAP_CONTENT'] != undefined){
+          this.populateContentForSubSession(JSON.parse(localStorage['REDCAP_CONTENT']))
+      } else {
+        alert('Please start this application for the first time where there is connectivity!');
+        if(localStorage['REDCAP_CONNECTIVITY_LOG'] != undefined){
+          localStorage['REDCAP_CONNECTIVITY_LOG'] = 
+            JSON
+            .stringify(JSON.parse(localStorage['REDCAP_CONNECTIVITY_LOG'])
+            .push(connectionAttemptDateTime));
+        } else {
+          localStorage['REDCAP_CONNECTIVITY_LOG'] = JSON.stringify([connectionAttemptDateTime]);
+        }
+
+      }
+
+    }
 
     this.populateContentForSubSession = function(data) {
       var startIndex = null;
       var endIndex = null;
+
+      localStorage['REDCAP_CONTENT'] = JSON.stringify(data);
 
       for(var i=0; i < data.sessionContent.length; i++) {
         if(data.sessionContent[i].variable == self.startPosition) {

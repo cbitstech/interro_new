@@ -4,18 +4,25 @@
 
 angular.module('sis.controllers')
 
-.controller('PROMISController', function($scope, $http, storage, $rootScope, $routeParams ) {
+.controller('PROMISController', function($scope, $http, $rootScope, $routeParams ) {
   console.log('CAT Controller loaded.');
 
 	var scores = [];
-	storage.bind($rootScope, 'scores', JSON.stringify(scores));
+	//storage.bind($rootScope, 'scores', JSON.stringify(scores));
 	//storage.bind($rootScope,'TSCORE',{defaultValue:0.0,storeName: 'TSCORE'});
 	//storage.bind($rootScope,'SE',{defaultValue: 0.0 ,storeName: 'SE'});
 
-	$scope.PROMISguid = $routeParams.formName;
-	$scope.nextAssessment = $routeParams.nextAssessment;
+	$scope.assessmentIndex = $routeParams.index;
+
+	$scope.currentInstruments = JSON.parse(localStorage.currentInstruments);
+    $scope.uniqueInstruments = JSON.parse(localStorage.uniqueInstruments);
+
+	$scope.PROMISguid = $scope.uniqueInstruments[$scope.assessmentIndex];
+	
+	debugger;
+
 	//'96FE494D-F176-4EFB-A473-2AB406610626'; // update to load dynamically
-	$scope.QUESTIONS_URL = 'content/questions/' + $scope.PROMISguid + '.json';
+	$scope.QUESTIONS_URL = 'content/measures/' + $scope.PROMISguid + '.json';
 	$scope.CALIBRATIONS_URL = 'content/calibrations/' + $scope.PROMISguid + '.json';
 
 	//'banks/Depression_Calibration.json'

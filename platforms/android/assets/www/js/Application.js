@@ -8,9 +8,14 @@
     configure: function configure($routeProvider, Routes) {
       $routeProvider
         .when(Routes.ROOT, {
-          templateUrl: 'partials/set_up.html',
-          controller: 'SetUpController',
-          controllerAs: 'setup'
+          templateUrl: 'partials/redcat_initializer.html',
+          controller: 'RedCatInitializerController',
+          controllerAs: 'redcat'
+        })
+        .when(Routes.REDCAT, {
+          templateUrl: 'partials/redcat_initializer.html',
+          controller: 'RedCatInitializerController',
+          controllerAs: 'redcat'
         })
         .when(Routes.CONFIG, {
           templateUrl: 'partials/configure.html',
@@ -31,115 +36,49 @@
           controller: 'SetUpController',
           controllerAs: 'setup'
         })
-        .when(Routes.EXERCISE, {
-          templateUrl: 'partials/exercise.html',
-          controller: 'ExerciseController',
-          controllerAs: 'exercise'
+        .when(Routes.ENGINE_SELECTOR, {
+          templateUrl: 'partials/engine_selector.html',
+          controller: 'EngineSelectorController',
+          controllerAs: 'engine'
         })
-        .when(Routes.TEMPTATION_LOG, {
-          templateUrl: 'partials/temptation_log.html',
-          controller: 'TemptationLogController',
-          controllerAs: 'temptation'
-        })
-        .when(Routes.SMOKING_STATUS, {
-          templateUrl: 'partials/smoking_status.html',
-          controller: 'SmokingStatusController',
-          controllerAs: 'smoking'
-        })
-        .when(Routes.CIGARETTE_LOG, {
-          templateUrl: 'partials/cigarette_log.html',
-          controller: 'CigaretteLogController',
-          controllerAs: 'cigarette'
+        .when(Routes.PROMIS, {
+          templateUrl: 'partials/promis.html',
+          controller: 'PROMISController'
         })
         .when(Routes.SESSIONS, {
           templateUrl: 'partials/session.html',
           controller: 'SessionsController',
           controllerAs: 'session'
-        })
-        .when(Routes.MORNING_EMA, {
-          templateUrl: 'partials/morning.html',
-          controller: 'EmaController',
-          controllerAs: 'ema'
-        })
-        .when(Routes.EVENING_EMA, {
-          templateUrl: 'partials/evening.html',
-          controller: 'EmaController',
-          controllerAs: 'ema'
-        })
-        .when(Routes.MOTIVATION + '/notificationId/:notificationId', {
-          templateUrl: 'partials/motivation.html',
-          controller: 'MotivationController',
-          controllerAs: 'motivation',
-          resolve: { notification: function() {
-            self.fromNotification = true;
-            return true;
-          }}
-        });
+        });;
     },
 
     run: function run($rootScope, $location, $q, $window, settings,
                       authenticationTokenCache, Routes, synchronizer,
                       deviceCache, device, configurationService,
                       emaService, eventService, sessionQuestionService,
-                      sessionsService, cigaretteLogCache, configurationCache,
+                      sessionsService, configurationCache,
                       emaCache, exerciseCache, resourceCache, sessionsCache,
-                      settingsCache, smokingStatusCache, temptationLogCache,
-                      cessationReasonCache, cessationDateCache, riskyTimeCache,
-                      socialSupportCache, emaAnswerCache, exerciseAnswerCache,
+                      settingsCache, emaAnswerCache, exerciseAnswerCache,
                       sessionAnswerCache) {
 
-      function configurationIncompleteRouting() {
-        var currentSessionNumber = sessionsService.currentSessionNumber();
-        if(!configurationService.getCessationDate() ||
-          (currentSessionNumber === 1 &&
-          !sessionsService.isComplete(currentSessionNumber))) {
-          $location.url(Routes.SESSIONS)
-        } else {
-          $location.url(Routes.SET_UP);
-        }
-      }
-
-      function determineRouteFromState() {
-        if (configurationService.configurationComplete()) {
-          if (emaService.isMorningPeriod(moment()) && !emaService.getTodaysMorningEma()) {
-            $location.url(Routes.MORNING_EMA + motivationPostfix());
-          } else if (emaService.isEveningPeriod(moment()) && !emaService.getTodaysEveningEma()) {
-            $location.url(Routes.EVENING_EMA + motivationPostfix());
-          } else if(self.fromNotification) {
-            self.fromNotification = false;
-          } else {
-            $location.url(Routes.HOME);
-          }
-        } else {
-          configurationIncompleteRouting();
-        }
-      }
-
-      function motivationPostfix() {
-        var NOTIVATION_ID_INDEX = 3;
-        var motivationSegments = $location.url()
-          .indexOf('motivation') > -1 ? $location.url().split('/') : [];
-        var postfix = '';
-        if (motivationSegments.length > 0) {
-          postfix = '?notificationId=' + motivationSegments[NOTIVATION_ID_INDEX];
-        }
-        return postfix;
-      }
 
       settings.fetch().then(function() {
-        determineRouteFromState();
-        $rootScope.$on('resume', function() {
-          determineRouteFromState();
-        });
+
+        // $rootScope.$on('resume', function() {
+        //   if (localStorage['REDCAT_INSTANCE'] != undefined){
+        //     $location.url(Routes.REDCAT)
+        //   }
+        //   else{
+        //     $location.url(Routes.SESSIONS)
+        //   }
+        // });
       });
       
       device.persistMetadata();
 
-      angular.forEach([deviceCache, cigaretteLogCache, configurationCache,
+      angular.forEach([deviceCache, configurationCache,
                        emaCache, exerciseCache, resourceCache, sessionsCache,
-                       settingsCache, smokingStatusCache, temptationLogCache,
-                       cessationReasonCache, cessationDateCache, riskyTimeCache,
-                       socialSupportCache, emaAnswerCache, exerciseAnswerCache,
+                       settingsCache, emaAnswerCache, exerciseAnswerCache,
                        sessionAnswerCache], function(cache) {
         synchronizer.registerCache(cache);
       });
@@ -162,9 +101,8 @@
       .config(['$routeProvider', 'Routes', Application.configure])
       .run(['$rootScope', '$location', '$q', '$window', 'settings', 'authenticationTokenCache',
         'Routes', 'synchronizer', 'deviceCache', 'device', 'configurationService', 'emaService',
-        'eventService', 'sessionQuestionService', 'sessionsService', 'cigaretteLogCache',
+        'eventService', 'sessionQuestionService', 'sessionsService', 
         'configurationCache', 'emaCache', 'exerciseCache', 'resourceCache', 'sessionsCache',
-        'settingsCache', 'smokingStatusCache', 'temptationLogCache', 'cessationReasonCache',
-        'cessationDateCache', 'riskyTimeCache', 'socialSupportCache', 'emaAnswerCache',
+        'settingsCache', 'emaAnswerCache',
         'exerciseAnswerCache', 'sessionAnswerCache', Application.run]);
 })();

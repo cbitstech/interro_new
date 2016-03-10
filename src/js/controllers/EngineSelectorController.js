@@ -26,7 +26,6 @@
           {name: this.uniqueInstruments[this.index]})) ? 
         Routes.PROMIS : Routes.SESSIONS;
        
-       debugger;
         $location.url(engineSelect + '/' + index); 
 
     }
@@ -47,7 +46,6 @@
                 localStorage.currentInstruments = JSON.stringify(data);
                 localStorage.uniqueInstruments = JSON.stringify(self.uniqueInstruments);
                 self.showStartButton = true;
-                debugger;
             }, 
             error: function(jqXHR, textStatus, errorThrown)
             { 

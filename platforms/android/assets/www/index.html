@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta http-equiv="Content-Security-Policy" content="style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'">
 
-    <title>SiS</title>
+    <title>RedCat</title>
 
     <link rel="stylesheet" href="vendor/css/bootstrap.min.css">
     <link rel="stylesheet" href="vendor/css/font-awesome/css/font-awesome.min.css">
@@ -24,7 +24,10 @@
     <script type="text/javascript" src="js/angular-route.min.js"></script>
     <script type="text/javascript" src="js/angular-resource.min.js"></script>
     <script type="text/javascript" src="js/moment.js"></script>
+    <script type="text/javascript" src="vendor/js/lodash.js"></script>
+
     <script type="text/javascript" src="vendor/js/mobiscroll.custom-2.16.0.min.js"></script>
+    <script type="text/javascript" src="vendor/js/angular-local-storage.js"></script>
     <script type="text/javascript" src="vendor/js/ui-bootstrap-tpls-0.13.3.min.js"></script>
 
     <script type="text/javascript" src="js/Application.js"></script>
@@ -35,21 +38,15 @@
     <script type="text/javascript" src="js/constants/Routes.js"></script>
     <script type="text/javascript" src="js/constants/Uuid.js"></script>
     
-    <script type="text/javascript" src="js/controllers/CigaretteLogController.js"></script>
     <script type="text/javascript" src="js/controllers/ConfigurationController.js"></script>
     <script type="text/javascript" src="js/controllers/EmaController.js"></script>
-    <script type="text/javascript" src="js/controllers/ExerciseController.js"></script>
     <script type="text/javascript" src="js/controllers/HomeController.js"></script>
-    <script type="text/javascript" src="js/controllers/MotivationController.js"></script>
     <script type="text/javascript" src="js/controllers/SessionsController.js"></script>
     <script type="text/javascript" src="js/controllers/SetUpController.js"></script>
-    <script type="text/javascript" src="js/controllers/SocialSupportController.js"></script>
-    <script type="text/javascript" src="js/controllers/RiskyTimesController.js"></script>
-    <script type="text/javascript" src="js/controllers/RiskyTimesEditController.js"></script>
+    <script type="text/javascript" src="js/controllers/EngineSelectorController.js"></script>   
     <script type="text/javascript" src="js/controllers/SessionSubNavController.js"></script>
-    <script type="text/javascript" src="js/controllers/CessationReasonsController.js"></script>
-    <script type="text/javascript" src="js/controllers/SmokingStatusController.js"></script>
-    <script type="text/javascript" src="js/controllers/TemptationLogController.js"></script>
+    <script type="text/javascript" src="js/controllers/RedCatInitializerController.js"></script>
+    <script type="text/javascript" src="js/controllers/PROMISController.js"></script>
 
     <script type="text/javascript" src="js/resources/AuthenticationToken.js"></script>
     <script type="text/javascript" src="js/resources/Settings.js"></script>
@@ -57,17 +54,6 @@
 
     <script type="text/javascript" src="js/caches/AuthenticationTokenCache.js"></script>
     <script type="text/javascript" src="js/services/Configuration.js"></script>
-    <script type="text/javascript" src="js/services/CigaretteLog.js"></script>
-    <script type="text/javascript" src="js/caches/CigaretteLogCache.js"></script>
-
-    <script type="text/javascript" src="js/services/CessationDate.js"></script>
-    <script type="text/javascript" src="js/caches/CessationDateCache.js"></script>
-    <script type="text/javascript" src="js/services/CessationReason.js"></script>
-    <script type="text/javascript" src="js/caches/CessationReasonCache.js"></script>
-    <script type="text/javascript" src="js/services/RiskyTime.js"></script>
-    <script type="text/javascript" src="js/caches/RiskyTimeCache.js"></script>
-    <script type="text/javascript" src="js/services/SocialSupport.js"></script>
-    <script type="text/javascript" src="js/caches/SocialSupportCache.js"></script>
 
     <script type="text/javascript" src="js/caches/ConfigurationCache.js"></script>
     <script type="text/javascript" src="js/services/ConfigurationModal.js"></script>
@@ -91,11 +77,7 @@
     <script type="text/javascript" src="js/services/SessionAnswer.js"></script>
     <script type="text/javascript" src="js/caches/SessionAnswerCache.js"></script>
     <script type="text/javascript" src="js/services/SessionQuestion.js"></script>
-    <script type="text/javascript" src="js/services/SmokingStatus.js"></script>
-    <script type="text/javascript" src="js/caches/SmokingStatusCache.js"></script>
     <script type="text/javascript" src="js/services/Synchronizer.js"></script>
-    <script type="text/javascript" src="js/services/TemptationLog.js"></script>
-    <script type="text/javascript" src="js/caches/TemptationLogCache.js"></script>
 
 <script>
     (function() {

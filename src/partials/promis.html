@@ -1,44 +1,38 @@
-
-
-      <!-- Header -->
-      <div id="container">
-        <div class="row">
-          <div class="col col-100">
-            <h4 id="context"  style="text-align:center"> {{context}}</h4>
-            <h2 id="stem"  style="text-align:center"> {{stem}}</h2>
-          </div>
-        </div>
-        
-				<div>
-				<ol>
-				<li ng-repeat="response in responses">
-					<div style="padding: 10px 10px 10px 10px;">
-					<button id="{{response.FormItemOID}}" class="button button-light" style="width: 80%;" name="{{response.ItemResponseOID}}" data-ng-click="selectResponse($event)">{{response.Description}}</input>
-					</div>
-				</li>
-				</ol>
-				</div>
-       
-        </div> 
-        
-        
-		<div ng-if="sequenceEngine.finished">
-
-			<div ng-include="" ng-controller=""></div>
-		Results:
-		<table>
-		<tr><th>Item</th><th>Response</th><th>Score</th><th>SE</th></tr>
-		<tr ng-repeat="score in scores">
-			<td>{{score.ItemID}}</td>
-			<td>{{score.Response}}</td>
-			<td>{{score.Theta}}</td>
-			<td>{{score.SE}}</td>
-		</tr>
-		</table>
-		</div>
-		  
-        <div class="row">
-          <div class="col col-100">
-            <a class="button button-block button-stable icon icon-right ion-chevron-right" href="#/finished-survey">Next</a>  
-          </div>
-        </div>
+<div id="app-container">
+	<!-- Header -->
+	<div id="container">
+	   <div class="row">
+	      <div class="col-md-12">
+	         <h3 id="context"  style="text-align:center"> {{context}}</h3>
+	         <h4 id="stem"  style="text-align:center"> {{stem}}</h4>
+	      </div>
+	   </div>
+	   <div ng-repeat="response in responses">
+	               <button id="{{response.FormItemOID}}" class="btn btn-info wide" style="width: 80%;" name="{{response.ItemResponseOID}}" data-ng-click="selectResponse($event)">{{response.Description}}</button>
+	   </div>
+	</div>
+	<div ng-if="sequenceEngine.finished">
+	   <div ng-include="" ng-controller=""></div>
+	   Results:
+	   <table>
+	      <tr>
+	         <th>Item</th>
+	         <th>Response</th>
+	         <th>Score</th>
+	         <th>SE</th>
+	      </tr>
+	      <tr ng-repeat="score in scores">
+	         <td>{{score.ItemID}}</td>
+	         <td>{{score.Response}}</td>
+	         <td>{{score.Theta}}</td>
+	         <td>{{score.SE}}</td>
+	      </tr>
+	   </table>
+	<div class="row">
+	   <div class="">
+	      <a class="button button-block button-stable icon icon-right ion-chevron-right" href="#/finished-survey">Next</a>
+	   </div>
+	</div>
+	</div>
+	
+</div>

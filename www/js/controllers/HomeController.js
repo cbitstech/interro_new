@@ -1,16 +1,11 @@
 (function () {
   'use strict';
 
-  function HomeController(sessionsService, exerciseService,
-                          exerciseAnswerService, $http) {
+  function HomeController() {
 
   }
 
   angular.module('sis.controllers')
     .controller('HomeController',
-    [ 'sessionsService',
-      'exerciseService',
-      'exerciseAnswerService',
-      '$http',
-      HomeController]);
+    [ HomeController]);
 })();
