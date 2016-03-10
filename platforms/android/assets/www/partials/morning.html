@@ -1,0 +1,73 @@
+
+<div id="app-container">
+    <div class="container">
+        <h2>Good Morning!</h2>
+
+        <!-- START STATE_TIME_AWAKE -->
+        <div ng-show="ema.currentQuestion == ema.questions.STATE_TIME_AWAKE">
+            <h4>How long ago did you get up?</h4>
+            <select class="form-control"
+                    ng-model="ema.currentAnswer"
+                    ng-change="ema.saveQuestionAnswer('How long ago did you get up?',
+                                                      ema.questions.STATE_SLEEP_QUALITY)">
+                <option ng-repeat="(index, value) in ['I\'m getting up right now',
+                                                      'I got up within the last 15min',
+                                                      'withing the last hour',
+                                                      'more than an hour ago']" value="{{ index + 1 }}">
+                    {{ value }}
+                </option>
+            </select>
+        </div>
+        <!-- END STATE_TIME_AWAKE -->
+
+        <!-- START STATE_SLEEP_QUALITY -->
+        <div ng-show="ema.currentQuestion == ema.questions.STATE_SLEEP_QUALITY">
+            <h4>How well did you sleep last night?</h4>
+            <div class="col-md-12 col-sm-12 col-xs-12 text-center"><h4>{{ema.currentAnswer || 5}}</h4></div>
+            <input type="range" string-to-number  class="form-control" min="0" max="10" step="1"
+                    ng-model="ema.currentAnswer"
+                    ng-change="ema.saveQuestionAnswer('How well did you sleep last night?',
+                                                      ema.questions.STATE_RESTED)">
+            <table class="slider-response">
+                <tr>
+                    <td ng-repeat="(index,value) in ['not well at all','extremely well']">
+                        <div ng-class="{0:'extreme-left', 1:'extreme-right'}[index]">{{value}}</div>
+                    </td>
+                </tr>
+            </table>  
+        </div>
+        <!-- END STATE_SLEEP_QUALITY -->
+
+        <!-- START STATE_SLEEP_QUALITY -->
+        <div ng-show="ema.currentQuestion == ema.questions.STATE_RESTED">
+            <h4>How well rested do you feel right now?</h4>
+            <div class="col-md-12 col-sm-12 col-xs-12 text-center"><h4>{{ema.currentAnswer || 5}}</h4></div>
+            <input type="range" string-to-number  class="form-control" min="0" max="10" step="1"
+                    ng-model="ema.currentAnswer"
+                    ng-change="ema.saveQuestionAnswer('How well rested do you feel right now?',
+                                                      ema.cessationSessionQuestionState(ema.questions.STATE_CONFIDENT_WEEKS_PRE,
+                                                                                        ema.questions.STATE_CONFIDENT_WEEKS_POST))">
+            <table class="slider-response">
+                <tr>
+                    <td ng-repeat="(index,value) in ['not at all well rested','extremely well rested']">
+                        <div ng-class="{0:'extreme-left', 1:'extreme-right'}[index]">{{value}}</div>
+                    </td>
+                </tr>
+            </table>  
+        </div>
+        <!-- END STATE_SLEEP_QUALITY -->
+
+        <!-- START COMMON EMA QUESTIONS -->
+        <ng-include src="'partials/common_ema_questions.html'"></ng-include>
+        <!-- END COMMON EMA QUESTIONS -->
+
+        <!-- START STATE_FINAL -->
+        <div ng-show="ema.currentQuestion == ema.questions.STATE_FINAL">
+            <h4>Thank you!</h4>
+            <a ng-click="ema.emaComplete()" class="btn btn-primary">Go Back</a>
+        </div>
+        <!-- END STATE_FINAL -->
+
+
+    </div>
+</div>

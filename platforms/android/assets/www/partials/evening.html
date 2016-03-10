@@ -1,0 +1,56 @@
+<div id="app-container">
+    <div class="container">
+        <h2>Recalling The Day: please recall your use of substances today.</h2>
+
+        <!-- START STATE_AMOUNT -->
+        <div ng-show="ema.currentQuestion == ema.questions.STATE_AMOUNT">
+            <h4>How many cigarettes did you smoke today?</h4>
+            <input type="number"
+                   class="form-control"
+                   min="0"
+                   max="100"
+                   ng-model="ema.currentAnswer" 
+                   ng-change="ema.saveQuestionAnswer('How many cigarettes did you smoke today?',
+                                                     ema.questions.STATE_DRINKS)"/>
+        </div>
+        <!-- END STATE_AMOUNT -->
+
+        <!-- START STATE_DRINKS -->
+        <div ng-show="ema.currentQuestion == ema.questions.STATE_DRINKS">
+            <h4>How many alcoholic drinks did you consume today?</h4>
+            <input type="number"
+                   class="form-control"
+                   min="0"
+                   max="100"
+                   ng-model="ema.currentAnswer"
+                   ng-change="ema.saveQuestionAnswer('How many alcoholic drinks did you consume today?',
+                                                     ema.questions.STATE_CAFFEINE)"/>
+        </div>
+        <!-- END STATE_DRINKS -->
+
+        <!-- START STATE_CAFFEINE -->
+        <div ng-show="ema.currentQuestion == ema.questions.STATE_CAFFEINE">
+            <h4>How many caffeinated beverages did you consume today?</h4>
+            <input type="number"
+                   min="0"
+                   max="100"
+                   class="form-control"
+                   ng-model="ema.currentAnswer"
+                   ng-change="ema.saveQuestionAnswer('How many caffeinated beverages did you consume today?',
+                                                     ema.cessationSessionQuestionState(ema.questions.STATE_CONFIDENT_WEEKS_PRE,
+                                                                                       ema.questions.STATE_CONFIDENT_WEEKS_POST))"/>
+        </div>
+        <!-- END STATE_CAFFEINE -->
+
+        <!-- START COMMON EMA QUESTIONS -->
+        <ng-include src="'partials/common_ema_questions.html'"></ng-include>
+        <!-- END COMMON EMA QUESTIONS -->
+
+        <!-- START STATE_FINAL -->
+        <div ng-show="ema.currentQuestion == ema.questions.STATE_FINAL">
+            <h4>Thank you!</h4>
+            <a ng-click="ema.emaComplete()" class="btn btn-primary">Go Back</a>
+        </div>
+        <!-- END STATE_FINAL -->
+    </div>
+</div>

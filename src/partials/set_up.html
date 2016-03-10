@@ -1,0 +1,34 @@
+<script type="text/javascript" src="vendor/js/mobiscroll.custom-2.16.0.min.js"></script>
+
+<div id="app-container" class="ng-scope">
+    <div class="container ng-scope">
+        <h3>Set Up</h3>
+        <div class="btn-group-vertical wide">
+            <a id="cessation_date_selector" class="btn btn-info" onclick="$('#cessation_date_input').click()">
+                Schedule Your Quit Day <strong> {{ setup.getCessationDate() | date:"MM/dd/yyyy" }} </strong>
+            </a>
+            <input id="cessation_date_input"
+                   type="text"
+                   ng-model="setup.cessationDate"
+                   ng-change="setup.setCessationDate()" mobiscroll-date />
+
+            <a class="btn btn-info" ng-click="setup.openCessationReasonsModal()">
+                Your Reasons for Stopping Smoking
+            </a>
+
+            <a class="btn btn-info" ng-click="setup.openRiskyTimesModal()">
+                Your Risky Times
+            </a>
+
+            <a class="btn btn-info" ng-click="setup.openSocialSupportModal()">
+                Your Social Support
+            </a>
+        </div>
+
+        <a id="save_button" class="btn btn-info home_button" ng-if="setup.configurationComplete()" href="#/home">Home</a>
+    </div>
+</div>
+
+<script type="text/javascript">
+  $("#cessation_date_input").mobiscroll().date();
+</script>

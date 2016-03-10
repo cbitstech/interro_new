@@ -1,0 +1,8 @@
+[caps]
+platformName = "Android"
+deviceName = "Nexus_5_API_21_x86"
+app = "./platforms/android/build/outputs/apk/android-debug.apk"
+
+[appium_lib]
+sauce_username = false
+sauce_access_key = false
