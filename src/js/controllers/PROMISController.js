@@ -4,7 +4,7 @@
 
 angular.module('sis.controllers')
 
-.controller('PROMISController', function($scope, $http,  $rootScope, $routeParams ) {
+.controller('PROMISController', function($scope, $http, $rootScope, $routeParams, $location, Routes) {
   console.log('CAT Controller loaded.');
 
 	var scores = [];
@@ -15,20 +15,23 @@ angular.module('sis.controllers')
 	$scope.scores = [];
 
 	$scope.assessmentIndex = $routeParams.index;
-
 	$scope.currentInstruments = JSON.parse(localStorage.currentInstruments);
     $scope.uniqueInstruments = JSON.parse(localStorage.uniqueInstruments);
-
 	$scope.PROMISguid = $scope.uniqueInstruments[$scope.assessmentIndex];
 	
-	debugger;
-
-	//'96FE494D-F176-4EFB-A473-2AB406610626'; // update to load dynamically
 	$scope.QUESTIONS_URL = 'content/measures/' + $scope.PROMISguid + '.json';
 	$scope.CALIBRATIONS_URL = 'content/calibrations/' + $scope.PROMISguid + '.json';
-
-	//'banks/Depression_Calibration.json'
 	
+	$scope.surveyFinished = function(){
+		if ($scope.uniqueInstruments.length > parseInt($scope.assessmentIndex+1)){
+			debugger;
+			$location.url(Routes.PROMIS + "/" + parseInt($scope.assessmentIndex + 1));
+		} else {
+			$location.url(Routes.HOME);
+		}
+		//TODO detect if the next questionnaire is or is not a PROMIS measure
+	}
+
 	$scope.loadForm = function() {
 			console.log('CAT load Form.');
 			$http.get($scope.QUESTIONS_URL).success(function(data) {
@@ -51,7 +54,8 @@ angular.module('sis.controllers')
 	$scope.renderScreen = function(ItemID) {
 	
 		if($scope.sequenceEngine.finished){
-			$scope.scores = angular.fromJson($scope.sequenceEngine.displayResults());
+			$scope.itemScores = $scope.sequenceEngine.displayResults();
+			$scope.finalTScore = $scope.itemScores[$scope.itemScores.length-1];
 			$scope.responses =[];
 			$scope.context  = "" ;
 			$scope.stem = "" ;
@@ -194,7 +198,6 @@ angular.module('sis.controllers')
 			
 		}
 
-
 		this.Results = function(id, response, ability, se){
 			this.ID = id;
 			this.Response = response;
@@ -314,20 +317,16 @@ angular.module('sis.controllers')
 
 
 		this.displayResults = function(){
-			var trace = "[";
+			var trace = [];
 
-			// for(var i=0 ; i <  this.responses.length; i++){
-			// 	if(i > 0){ trace = trace + ",";}
-			// 	trace = trace + "{";
-			// 	trace = trace +"\"ItemID\":\"" + this.responses[i].ID + "\",";
-			// 	trace = trace +"\"Response\":\"" + this.responses[i].Response + "\",";
-			// 	trace = trace +"\"Theta\":\"" + parseInt(this.responses[i].Ability *100)/100.0 + "\",";
-			// 	trace = trace +"\"SE\":\"" + parseInt(this.responses[i].SE *100)/100.0 +"\"";
-			// 	trace = trace  + "}";
-				
-			// }
-			// trace = trace  + "]";
-
+			for(var i=0 ; i <  this.responses.length; i++){
+				var object = {};
+				object.ItemID = this.responses[i].ID ;
+				object.Response = this.responses[i].Response;
+				object.Theta = parseInt(this.responses[i].Ability *100)/100.0;
+				object.SE = parseInt(this.responses[i].SE *100)/100.0;
+				trace.push(object);
+			}
 			this.responses = new Array();
 			return trace;
 		}
@@ -367,9 +366,8 @@ angular.module('sis.controllers')
             newscore.se = this.StandardError;
             
 			//var newscore = "{\"tscore\":\"" + this.ability+ "\"," + "\"se:\"" + this.StandardError + "\"" + "}"
-			var myarray = JSON.parse($rootScope.scores);
-			myarray.push(newscore);
-			$rootScope.scores = JSON.stringify(myarray);
+			$scope.scores.push(newscore); 
+			localStorage['scores'] = JSON.stringify($scope.scores);
 			//console.log(JSON.parse(myarray) +":"+ newscore.se);
 			//myarray.push(newscore);
 			//$rootScope.scores.push(newscore);

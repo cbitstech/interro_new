@@ -8,9 +8,9 @@
     configure: function configure($routeProvider, Routes) {
       $routeProvider
         .when(Routes.ROOT, {
-          templateUrl: 'partials/home.html',
-          controller: 'HomeController',
-          controllerAs: 'home'
+          templateUrl: 'partials/redcat_initializer.html',
+          controller: 'RedCatInitializerController',
+          controllerAs: 'redcat'
         })
         .when(Routes.REDCAT, {
           templateUrl: 'partials/redcat_initializer.html',

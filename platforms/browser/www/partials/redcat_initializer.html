@@ -4,16 +4,19 @@
         <h2>{{redcat.studies.headers.title}}</h2>
         {{redcat.studies.headers.description}}
         </div>
-        <div class="btn-group" data-toggle="buttons">
-            <div ng-repeat="instance in redcat.studies.instances">
-                <label class="btn wide btn-primary" >
-                    <input style="display:none;" type="radio" ng-model="redcat.redCatInstance" ng-value="instance" autocomplete="off">
-                    <h3>{{instance.name}}</h3>
-                    {{instance.description}}
-                </label>
-                <br/><br/>
-            </div>
-        </div>
+        <table  class="table table-striped">
+        <tr ng-repeat="instance in redcat.studies.instances">
+        <td> 
+            <input type="radio" ng-model="redcat.redCatInstance" ng-value="instance" autocomplete="off" id="study{{$index}}">
+        </td>
+        <td>
+            <label for="study{{$index}}">
+            <h3>{{instance.name}}</h3>
+            {{instance.description}}
+            </label>
+        </td>
+        </tr>
+        </table>
         <button class="btn wide btn-primary" ng-click="redcat.setProtocol()">Begin</button>
     </div>
 </div>
