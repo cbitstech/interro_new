@@ -4,7 +4,7 @@
 
 angular.module('sis.controllers')
 
-.controller('PROMISController', function($scope, $http, $rootScope, $routeParams ) {
+.controller('PROMISController', function($scope, $http,  $rootScope, $routeParams ) {
   console.log('CAT Controller loaded.');
 
 	var scores = [];

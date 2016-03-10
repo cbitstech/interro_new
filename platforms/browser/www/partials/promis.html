@@ -3,12 +3,12 @@
 	<div id="container">
 	   <div class="row">
 	      <div class="col-md-12">
-	         <h3 id="context"  style="text-align:center"> {{context}}</h3>
-	         <h4 id="stem"  style="text-align:center"> {{stem}}</h4>
+	         <h3 id="context" style="text-align:center"> {{context}}</h3>
+	         <h4 id="stem" style="text-align:center"> {{stem}}</h4>
 	      </div>
 	   </div>
 	   <div ng-repeat="response in responses">
-	               <button id="{{response.FormItemOID}}" class="btn btn-info wide" style="width: 80%;" name="{{response.ItemResponseOID}}" data-ng-click="selectResponse($event)">{{response.Description}}</button>
+	               <button id="{{response.FormItemOID}}" class="btn btn-info wide" name="{{response.ItemResponseOID}}" data-ng-click="selectResponse($event)">{{response.Description}}</button><br/><br/>
 	   </div>
 	</div>
 	<div ng-if="sequenceEngine.finished">
@@ -35,4 +35,4 @@
 	</div>
 	</div>
 	
-</div>>
+</div>

@@ -4,13 +4,15 @@
 
 angular.module('sis.controllers')
 
-.controller('PROMISController', function($scope, $http, $rootScope, $routeParams ) {
+.controller('PROMISController', function($scope, $http,  $rootScope, $routeParams ) {
   console.log('CAT Controller loaded.');
 
 	var scores = [];
 	//storage.bind($rootScope, 'scores', JSON.stringify(scores));
 	//storage.bind($rootScope,'TSCORE',{defaultValue:0.0,storeName: 'TSCORE'});
 	//storage.bind($rootScope,'SE',{defaultValue: 0.0 ,storeName: 'SE'});
+
+	$scope.scores = [];
 
 	$scope.assessmentIndex = $routeParams.index;
 
@@ -314,17 +316,17 @@ angular.module('sis.controllers')
 		this.displayResults = function(){
 			var trace = "[";
 
-			for(var i=0 ; i <  this.responses.length; i++){
-				if(i > 0){ trace = trace + ",";}
-				trace = trace + "{";
-				trace = trace +"\"ItemID\":\"" + this.responses[i].ID + "\",";
-				trace = trace +"\"Response\":\"" + this.responses[i].Response + "\",";
-				trace = trace +"\"Theta\":\"" + parseInt(this.responses[i].Ability *100)/100.0 + "\",";
-				trace = trace +"\"SE\":\"" + parseInt(this.responses[i].SE *100)/100.0 +"\"";
-				trace = trace  + "}";
+			// for(var i=0 ; i <  this.responses.length; i++){
+			// 	if(i > 0){ trace = trace + ",";}
+			// 	trace = trace + "{";
+			// 	trace = trace +"\"ItemID\":\"" + this.responses[i].ID + "\",";
+			// 	trace = trace +"\"Response\":\"" + this.responses[i].Response + "\",";
+			// 	trace = trace +"\"Theta\":\"" + parseInt(this.responses[i].Ability *100)/100.0 + "\",";
+			// 	trace = trace +"\"SE\":\"" + parseInt(this.responses[i].SE *100)/100.0 +"\"";
+			// 	trace = trace  + "}";
 				
-			}
-			trace = trace  + "]";
+			// }
+			// trace = trace  + "]";
 
 			this.responses = new Array();
 			return trace;
