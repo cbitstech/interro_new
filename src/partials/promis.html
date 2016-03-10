@@ -2,8 +2,8 @@
 	<!-- Header -->
 	<div class="container">
 	<div ng-if="!sequenceEngine.finished" class="col-md-12">
-	    <h3> {{context}}...</h3>
-	    <h2 style="margin-top:0;"> {{stem}}</h2>
+	    <h2> {{context}}...</h2>
+	    <h1 style="margin-top:0;"> {{stem}}</h1>
 		<div ng-repeat="response in responses">
 			<button id="{{response.FormItemOID}}" class="btn btn-info wide" name="{{response.ItemResponseOID}}" data-ng-click="selectResponse($event)">{{response.Description}}</button><br/><br/>
 		</div>
@@ -23,8 +23,8 @@
 	         <th>SE</th>
 	      </tr>
 	      <tr ng-repeat="score in itemScores">
-	         <td>{{score.ItemID}}</td>
-	         <td>{{score.Response}}</td>
+	         <td>{{score.field_name}}</td>
+	         <td>{{score.value}}</td>
 	         <td>{{score.Theta}}</td>
 	         <td>{{score.SE}}</td>
 	      </tr>

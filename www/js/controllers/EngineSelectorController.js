@@ -6,8 +6,8 @@
     var self = this;
 
     this.PROMISMeasures = [
-      {name:'promis_bank_v10_depression', guid:'promis_bank_v10_depression'},
-      {name:'promis_bank_v10_anxiety', guid:'promis_bank_v10_depression'}
+      {name:'promis_depression', guid:'promis_bank_v10_depression'},
+      {name:'promis_anxiety', guid:'promis_bank_v10_depression'}
       ];
 
     this.instance = JSON.parse(localStorage['REDCAT_INSTANCE']);
@@ -20,7 +20,7 @@
 
     this.startAssessment = function(index){
         // determine if each measure is a CAT or not
-
+        debugger;
         var engineSelect = 
           (_.some(this.PROMISMeasures,
           {name: this.uniqueInstruments[this.index]})) ? 

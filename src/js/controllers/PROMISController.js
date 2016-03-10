@@ -12,12 +12,23 @@ angular.module('sis.controllers')
 	//storage.bind($rootScope,'TSCORE',{defaultValue:0.0,storeName: 'TSCORE'});
 	//storage.bind($rootScope,'SE',{defaultValue: 0.0 ,storeName: 'SE'});
 
+	$scope.PROMISMeasures = [
+      {name:'promis_depression', guid:'promis_bank_v10_depression'},
+      {name:'promis_anxiety', guid:'promis_bank_v10_depression'}
+    ];
+
 	$scope.scores = [];
 
+	$scope.redcatInstance = JSON.parse(localStorage['REDCAT_INSTANCE']);
 	$scope.assessmentIndex = $routeParams.index;
 	$scope.currentInstruments = JSON.parse(localStorage.currentInstruments);
     $scope.uniqueInstruments = JSON.parse(localStorage.uniqueInstruments);
-	$scope.PROMISguid = $scope.uniqueInstruments[$scope.assessmentIndex];
+	$scope.PROMISguid = $scope.PROMISMeasures[
+						_.findIndex(
+							$scope.PROMISMeasures,
+							{name:$scope.uniqueInstruments[$scope.assessmentIndex]})]
+						.guid;
+	debugger;
 	
 	$scope.QUESTIONS_URL = 'content/measures/' + $scope.PROMISguid + '.json';
 	$scope.CALIBRATIONS_URL = 'content/calibrations/' + $scope.PROMISguid + '.json';
@@ -51,14 +62,51 @@ angular.module('sis.controllers')
 			});
 	};
 
+
+	$scope.saveData = function(scoreArray,tScore){
+
+		var dataToTransmit = scoreArray;
+
+		dataToTransmit['promis_tscore'] = tScore.value;
+		dataToTransmit['record_id'] = 1;
+
+		debugger;
+
+      	$.ajax({
+            url: $scope.redcatInstance.redcat_endpoint, 
+            cache: false, 
+            type: 'POST',
+            data: 'token=' + 
+                $scope.redcatInstance.redcat_token + 
+                '&content=record&format=json' +
+                '&returnFormat=json' +
+                '&overwriteBehavior=normal'+
+                '&data=' +JSON.stringify([dataToTransmit]),
+            dataType: 'json', 
+            success: function(data) {
+            	debugger;
+                
+            }, 
+            error: function(jqXHR, textStatus, errorThrown)
+            { 
+            	debugger;
+                
+            }
+      	})
+    };
+
+
 	$scope.renderScreen = function(ItemID) {
 	
 		if($scope.sequenceEngine.finished){
-			$scope.itemScores = $scope.sequenceEngine.displayResults();
+			$scope.finalResults = $scope.sequenceEngine.displayResults();
+			$scope.itemScores = $scope.finalResults.itemScores;
+			$scope.transmissionScores = $scope.finalResults.transmissionScores;
 			$scope.finalTScore = $scope.itemScores[$scope.itemScores.length-1];
 			$scope.responses =[];
 			$scope.context  = "" ;
 			$scope.stem = "" ;
+			$scope.saveData($scope.transmissionScores,$scope.finalTScore);
 			return;
 		}
 	
@@ -317,18 +365,23 @@ angular.module('sis.controllers')
 
 
 		this.displayResults = function(){
-			var trace = [];
+			var itemScores = [];
+			var transmissionScoreObject = {};
 
 			for(var i=0 ; i <  this.responses.length; i++){
-				var object = {};
-				object.ItemID = this.responses[i].ID ;
-				object.Response = this.responses[i].Response;
-				object.Theta = parseInt(this.responses[i].Ability *100)/100.0;
-				object.SE = parseInt(this.responses[i].SE *100)/100.0;
-				trace.push(object);
+				var itemScoreObject = {};
+				
+				itemScoreObject.field_name = this.responses[i].ID;
+				itemScoreObject.value = this.responses[i].Response;
+				itemScoreObject.Theta = parseInt(this.responses[i].Ability *100)/100.0;
+				itemScoreObject.SE = parseInt(this.responses[i].SE *100)/100.0;
+				
+				transmissionScoreObject['cat_' + itemScoreObject.field_name.toLowerCase()] = itemScoreObject.value;
+
+				itemScores.push(itemScoreObject);
 			}
 			this.responses = new Array();
-			return trace;
+			return {itemScores:itemScores, transmissionScores:transmissionScoreObject};
 		}
 
 

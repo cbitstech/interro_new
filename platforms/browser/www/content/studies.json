@@ -10,13 +10,13 @@
 			"description":"Let's take a look at some PROMIS measures.",
 			"instructions":"Press Begin to start the assessment",
 			"redcat_endpoint":"http://boxwood-ray-119121.appspot.com/api/",
-			"redcat_token":"2D40D98EE978E5F6DACDD3A4F9AC6144"
+			"redcat_token":"9D6883FA70DECD00B796FC64FED81303"
 		}, {
-			"name":"Custom Questionnaire",
-			"description":"But what if I want to make a non-PROMIS assessment?",
+			"name":"REDCAT Private Demo #2",
+			"description":"Let's take a look at some non-PROMIS measures.",
 			"instructions":"Press Begin to start the assessment",
 			"redcat_endpoint":"http://boxwood-ray-119121.appspot.com/api/",
-			"redcat_token":"0CEE29BE16A7BCCBD773F111DF7636CF"
+			"redcat_token":"2D40D98EE978E5F6DACDD3A4F9AC6144"
 		}
 	]
 }
