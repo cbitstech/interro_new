@@ -8,7 +8,9 @@
     SESSIONS: '/session',
     REDCAT: '/redcat_initializer',
     ENGINE_SELECTOR: '/engine_selector',
-    PROMIS : '/promis'
+    PROMIS : '/promis',
+    DECISION_SUPPORT : '/decision_support',
+    GRAPHS : '/graphs'
   };
 
   angular.module('sis.constants')

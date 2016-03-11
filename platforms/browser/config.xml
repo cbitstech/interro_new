@@ -11,6 +11,9 @@
         Mark Begale
     </author>
     <content src="index.html" />
-    <access origin="ACCESS_ORIGIN" />
-    <icon src="res/icon.png" />
+    <access origin="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <icon src="icon.png" />
 </widget>

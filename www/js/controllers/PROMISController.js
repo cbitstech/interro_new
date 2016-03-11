@@ -28,14 +28,12 @@ angular.module('sis.controllers')
 							$scope.PROMISMeasures,
 							{name:$scope.uniqueInstruments[$scope.assessmentIndex]})]
 						.guid;
-	debugger;
 	
 	$scope.QUESTIONS_URL = 'content/measures/' + $scope.PROMISguid + '.json';
 	$scope.CALIBRATIONS_URL = 'content/calibrations/' + $scope.PROMISguid + '.json';
 	
 	$scope.surveyFinished = function(){
 		if ($scope.uniqueInstruments.length > parseInt($scope.assessmentIndex+1)){
-			debugger;
 			$location.url(Routes.PROMIS + "/" + parseInt($scope.assessmentIndex + 1));
 		} else {
 			$location.url(Routes.HOME);
@@ -63,14 +61,13 @@ angular.module('sis.controllers')
 	};
 
 
-	$scope.saveData = function(scoreArray,tScore){
+	$scope.saveData = function(scoreArray,tScore,finalSE){
 
 		var dataToTransmit = scoreArray;
 
-		dataToTransmit['promis_tscore'] = tScore.value;
+		dataToTransmit['promis_tscore'] = tScore;
 		dataToTransmit['record_id'] = 1;
-
-		debugger;
+		dataToTransmit['promis_std_error'] = finalSE;
 
       	$.ajax({
             url: $scope.redcatInstance.redcat_endpoint, 
@@ -102,11 +99,12 @@ angular.module('sis.controllers')
 			$scope.finalResults = $scope.sequenceEngine.displayResults();
 			$scope.itemScores = $scope.finalResults.itemScores;
 			$scope.transmissionScores = $scope.finalResults.transmissionScores;
-			$scope.finalTScore = $scope.itemScores[$scope.itemScores.length-1];
+			$scope.finalTScore = $scope.itemScores[$scope.itemScores.length-1].Theta*10+50;
+			$scope.finalSE = $scope.itemScores[$scope.itemScores.length-1].SE*10;
 			$scope.responses =[];
 			$scope.context  = "" ;
 			$scope.stem = "" ;
-			$scope.saveData($scope.transmissionScores,$scope.finalTScore);
+			$scope.saveData($scope.transmissionScores,$scope.finalTScore,$scope.finalSE);
 			return;
 		}
 	

@@ -13,14 +13,13 @@
     this.instance = JSON.parse(localStorage['REDCAT_INSTANCE']);
     this.currentInstruments = [];
     this.uniqueInstruments = [];
-
+ 
     // this.showStartButton = false;
 
     this.index = $routeParams.id | 0;
 
     this.startAssessment = function(index){
         // determine if each measure is a CAT or not
-        debugger;
         var engineSelect = 
           (_.some(this.PROMISMeasures,
           {name: this.uniqueInstruments[this.index]})) ? 

@@ -31,6 +31,16 @@
           controller: 'SessionSubNavController',
           controllerAs: 'subSession'
         })
+        .when(Routes.DECISION_SUPPORT, {
+          templateUrl: 'partials/decision_support.html',
+          controller: 'DecisionSupportController',
+          controllerAs: 'setup'
+        })
+        .when(Routes.GRAPHS, {
+          templateUrl: 'partials/graphs.html',
+          controller: 'GraphController',
+          controllerAs: 'graphs'
+        })
         .when(Routes.SET_UP, {
           templateUrl: 'partials/set_up.html',
           controller: 'SetUpController',
@@ -41,11 +51,11 @@
           controller: 'EngineSelectorController',
           controllerAs: 'engine'
         })
-        .when(Routes.PROMIS, {
+        .when(Routes.PROMIS + '/:index', {
           templateUrl: 'partials/promis.html',
-          controller: 'PROMISController'
+          controller: 'PROMISController',  
         })
-        .when(Routes.SESSIONS, {
+        .when(Routes.SESSIONS + '/:index', {
           templateUrl: 'partials/session.html',
           controller: 'SessionsController',
           controllerAs: 'session'

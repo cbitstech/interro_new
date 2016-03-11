@@ -18,16 +18,15 @@
         }
     },
     "installed_plugins": {
-        "org.apache.cordova.network-information": {
-            "PACKAGE_NAME": "edu.northwestern.cbits.sis"
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "edu.northwestern.cbits.interro"
         },
-        "de.appplant.cordova.plugin.local-notification": {
-            "PACKAGE_NAME": "edu.northwestern.cbits.sis"
+        "org.apache.cordova.device": {
+            "PACKAGE_NAME": "edu.northwestern.cbits.interro"
+        },
+        "org.apache.cordova.network-information": {
+            "PACKAGE_NAME": "edu.northwestern.cbits.interro"
         }
     },
-    "dependent_plugins": {
-        "org.apache.cordova.device": {
-            "PACKAGE_NAME": "edu.northwestern.cbits.sis"
-        }
-    }
+    "dependent_plugins": {}
 }

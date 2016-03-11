@@ -45,7 +45,7 @@
     "appium:start": "./node_modules/.bin/appium 2>/dev/null 1>&2 &",
     "appium:stop": "ps -A | grep appium | grep -v grep | egrep -o \"^\\d+\" | xargs kill",
     "browser:add_platform": "./node_modules/.bin/cordova platform remove browser && ./node_modules/.bin/cordova platform add browser && npm run add_plugins",
-    "add_plugins": "./node_modules/.bin/cordova plugin remove org.apache.cordova.device; ./node_modules/.bin/cordova plugin add org.apache.cordova.device; ./node_modules/.bin/cordova plugin remove org.apache.cordova.network-information; ./node_modules/.bin/cordova plugin add org.apache.cordova.network-information; ./node_modules/.bin/cordova plugin remove de.appplant.cordova.plugin.local-notification; ./node_modules/.bin/cordova plugin add de.appplant.cordova.plugin.local-notification@0.8.1;",
+    "add_plugins": "./node_modules/.bin/cordova plugin remove org.apache.cordova.device; ./node_modules/.bin/cordova plugin add org.apache.cordova.device; ./node_modules/.bin/cordova plugin remove org.apache.cordova.network-information; ./node_modules/.bin/cordova plugin add org.apache.cordova.network-information;",
     "browser:build": "npm run build:prepare && ./node_modules/.bin/cordova build browser",
     "browser:simulator": "npm run browser:build && ./node_modules/.bin/cordova run browser",
     "build:all": "npm run browser:build && npm run android:build",

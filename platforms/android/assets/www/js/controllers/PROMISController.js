@@ -4,22 +4,43 @@
 
 angular.module('sis.controllers')
 
-.controller('PROMISController', function($scope, $http, storage, $rootScope, $routeParams ) {
+.controller('PROMISController', function($scope, $http, $rootScope, $routeParams, $location, Routes) {
   console.log('CAT Controller loaded.');
 
 	var scores = [];
-	storage.bind($rootScope, 'scores', JSON.stringify(scores));
+	//storage.bind($rootScope, 'scores', JSON.stringify(scores));
 	//storage.bind($rootScope,'TSCORE',{defaultValue:0.0,storeName: 'TSCORE'});
 	//storage.bind($rootScope,'SE',{defaultValue: 0.0 ,storeName: 'SE'});
 
-	$scope.PROMISguid = $routeParams.formName;
-	$scope.nextAssessment = $routeParams.nextAssessment;
-	//'96FE494D-F176-4EFB-A473-2AB406610626'; // update to load dynamically
-	$scope.QUESTIONS_URL = 'content/questions/' + $scope.PROMISguid + '.json';
-	$scope.CALIBRATIONS_URL = 'content/calibrations/' + $scope.PROMISguid + '.json';
+	$scope.PROMISMeasures = [
+      {name:'promis_depression', guid:'promis_bank_v10_depression'},
+      {name:'promis_anxiety', guid:'promis_bank_v10_depression'}
+    ];
 
-	//'banks/Depression_Calibration.json'
+	$scope.scores = [];
+
+	$scope.redcatInstance = JSON.parse(localStorage['REDCAT_INSTANCE']);
+	$scope.assessmentIndex = $routeParams.index;
+	$scope.currentInstruments = JSON.parse(localStorage.currentInstruments);
+    $scope.uniqueInstruments = JSON.parse(localStorage.uniqueInstruments);
+	$scope.PROMISguid = $scope.PROMISMeasures[
+						_.findIndex(
+							$scope.PROMISMeasures,
+							{name:$scope.uniqueInstruments[$scope.assessmentIndex]})]
+						.guid;
 	
+	$scope.QUESTIONS_URL = 'content/measures/' + $scope.PROMISguid + '.json';
+	$scope.CALIBRATIONS_URL = 'content/calibrations/' + $scope.PROMISguid + '.json';
+	
+	$scope.surveyFinished = function(){
+		if ($scope.uniqueInstruments.length > parseInt($scope.assessmentIndex+1)){
+			$location.url(Routes.PROMIS + "/" + parseInt($scope.assessmentIndex + 1));
+		} else {
+			$location.url(Routes.HOME);
+		}
+		//TODO detect if the next questionnaire is or is not a PROMIS measure
+	}
+
 	$scope.loadForm = function() {
 			console.log('CAT load Form.');
 			$http.get($scope.QUESTIONS_URL).success(function(data) {
@@ -39,13 +60,51 @@ angular.module('sis.controllers')
 			});
 	};
 
+
+	$scope.saveData = function(scoreArray,tScore,finalSE){
+
+		var dataToTransmit = scoreArray;
+
+		dataToTransmit['promis_tscore'] = tScore;
+		dataToTransmit['record_id'] = 1;
+		dataToTransmit['promis_std_error'] = finalSE;
+
+      	$.ajax({
+            url: $scope.redcatInstance.redcat_endpoint, 
+            cache: false, 
+            type: 'POST',
+            data: 'token=' + 
+                $scope.redcatInstance.redcat_token + 
+                '&content=record&format=json' +
+                '&returnFormat=json' +
+                '&overwriteBehavior=normal'+
+                '&data=' +JSON.stringify([dataToTransmit]),
+            dataType: 'json', 
+            success: function(data) {
+            	debugger;
+                
+            }, 
+            error: function(jqXHR, textStatus, errorThrown)
+            { 
+            	debugger;
+                
+            }
+      	})
+    };
+
+
 	$scope.renderScreen = function(ItemID) {
 	
 		if($scope.sequenceEngine.finished){
-			$scope.scores = angular.fromJson($scope.sequenceEngine.displayResults());
+			$scope.finalResults = $scope.sequenceEngine.displayResults();
+			$scope.itemScores = $scope.finalResults.itemScores;
+			$scope.transmissionScores = $scope.finalResults.transmissionScores;
+			$scope.finalTScore = $scope.itemScores[$scope.itemScores.length-1].Theta*10+50;
+			$scope.finalSE = $scope.itemScores[$scope.itemScores.length-1].SE*10;
 			$scope.responses =[];
 			$scope.context  = "" ;
 			$scope.stem = "" ;
+			$scope.saveData($scope.transmissionScores,$scope.finalTScore,$scope.finalSE);
 			return;
 		}
 	
@@ -185,7 +244,6 @@ angular.module('sis.controllers')
 			
 		}
 
-
 		this.Results = function(id, response, ability, se){
 			this.ID = id;
 			this.Response = response;
@@ -305,22 +363,23 @@ angular.module('sis.controllers')
 
 
 		this.displayResults = function(){
-			var trace = "[";
+			var itemScores = [];
+			var transmissionScoreObject = {};
 
 			for(var i=0 ; i <  this.responses.length; i++){
-				if(i > 0){ trace = trace + ",";}
-				trace = trace + "{";
-				trace = trace +"\"ItemID\":\"" + this.responses[i].ID + "\",";
-				trace = trace +"\"Response\":\"" + this.responses[i].Response + "\",";
-				trace = trace +"\"Theta\":\"" + parseInt(this.responses[i].Ability *100)/100.0 + "\",";
-				trace = trace +"\"SE\":\"" + parseInt(this.responses[i].SE *100)/100.0 +"\"";
-				trace = trace  + "}";
+				var itemScoreObject = {};
 				
-			}
-			trace = trace  + "]";
+				itemScoreObject.field_name = this.responses[i].ID;
+				itemScoreObject.value = this.responses[i].Response;
+				itemScoreObject.Theta = parseInt(this.responses[i].Ability *100)/100.0;
+				itemScoreObject.SE = parseInt(this.responses[i].SE *100)/100.0;
+				
+				transmissionScoreObject['cat_' + itemScoreObject.field_name.toLowerCase()] = itemScoreObject.value;
 
+				itemScores.push(itemScoreObject);
+			}
 			this.responses = new Array();
-			return trace;
+			return {itemScores:itemScores, transmissionScores:transmissionScoreObject};
 		}
 
 
@@ -358,9 +417,8 @@ angular.module('sis.controllers')
             newscore.se = this.StandardError;
             
 			//var newscore = "{\"tscore\":\"" + this.ability+ "\"," + "\"se:\"" + this.StandardError + "\"" + "}"
-			var myarray = JSON.parse($rootScope.scores);
-			myarray.push(newscore);
-			$rootScope.scores = JSON.stringify(myarray);
+			$scope.scores.push(newscore); 
+			localStorage['scores'] = JSON.stringify($scope.scores);
 			//console.log(JSON.parse(myarray) +":"+ newscore.se);
 			//myarray.push(newscore);
 			//$rootScope.scores.push(newscore);

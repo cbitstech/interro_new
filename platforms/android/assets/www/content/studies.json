@@ -1,8 +1,8 @@
 {
 
 	"headers": {
-		"title":"RedCat",
-		"description":""
+		"title":"Welcome to RedCat",
+		"description":"Choose a protocol to begin!"
 	},
 	"instances": [
 		{
@@ -10,13 +10,7 @@
 			"description":"Let's take a look at some PROMIS measures.",
 			"instructions":"Press Begin to start the assessment",
 			"redcat_endpoint":"http://boxwood-ray-119121.appspot.com/api/",
-			"redcat_token":"2D40D98EE978E5F6DACDD3A4F9AC6144"
-		}, {
-			"name":"Custom Questionnaire",
-			"description":"But what if I want to make a non-PROMIS assessment?",
-			"instructions":"Press Begin to start the assessment",
-			"redcat_endpoint":"http://boxwood-ray-119121.appspot.com/api/",
-			"redcat_token":"0CEE29BE16A7BCCBD773F111DF7636CF"
+			"redcat_token":"9D6883FA70DECD00B796FC64FED81303"
 		}
 	]
 }

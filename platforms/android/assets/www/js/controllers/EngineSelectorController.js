@@ -6,27 +6,25 @@
     var self = this;
 
     this.PROMISMeasures = [
-      {name:'promis_bank_v10_depression', guid:'promis_bank_v10_depression'},
-      {name:'promis_bank_v10_anxiety', guid:'promis_bank_v10_depression'}
+      {name:'promis_depression', guid:'promis_bank_v10_depression'},
+      {name:'promis_anxiety', guid:'promis_bank_v10_depression'}
       ];
 
     this.instance = JSON.parse(localStorage['REDCAT_INSTANCE']);
     this.currentInstruments = [];
     this.uniqueInstruments = [];
-
+ 
     // this.showStartButton = false;
 
     this.index = $routeParams.id | 0;
 
     this.startAssessment = function(index){
         // determine if each measure is a CAT or not
-
         var engineSelect = 
           (_.some(this.PROMISMeasures,
           {name: this.uniqueInstruments[this.index]})) ? 
         Routes.PROMIS : Routes.SESSIONS;
        
-       debugger;
         $location.url(engineSelect + '/' + index); 
 
     }
@@ -47,7 +45,6 @@
                 localStorage.currentInstruments = JSON.stringify(data);
                 localStorage.uniqueInstruments = JSON.stringify(self.uniqueInstruments);
                 self.showStartButton = true;
-                debugger;
             }, 
             error: function(jqXHR, textStatus, errorThrown)
             { 
